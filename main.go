@@ -31,7 +31,7 @@ func main() {
 		StrictRouting:                true,
 		DisablePreParseMultipartForm: true,
 		DisableDefaultDate:           true,
-		DisableStartupMessage:        true,
+		DisableStartupMessage:        false,
 	})
 
 	app.Use(cors.New())
@@ -44,7 +44,7 @@ func main() {
 		})
 	})
 
-	app.Post("/query/:dbname/write", func(c *fiber.Ctx) error {
+	app.Post("/query/write", func(c *fiber.Ctx) error {
 		var req QueryRequest
 
 		if err := c.BodyParser(&req); err != nil {
@@ -61,7 +61,7 @@ func main() {
 			})
 		}
 
-		result, err := store.Write(c.Params("dbname"), req)
+		result, err := store.Write(req)
 		if err != nil {
 			return c.Status(500).JSON(ErrorResponse{
 				Success: false,
@@ -75,7 +75,7 @@ func main() {
 		})
 	})
 
-	app.Post("/query/:dbname/read", func(c *fiber.Ctx) error {
+	app.Post("/query/read", func(c *fiber.Ctx) error {
 		var req QueryRequest
 
 		if err := c.BodyParser(&req); err != nil {
@@ -92,7 +92,7 @@ func main() {
 			})
 		}
 
-		result, err := store.Read(c.Params("dbname"), req)
+		result, err := store.Read(req)
 		if err != nil {
 			return c.Status(500).JSON(ErrorResponse{
 				Success: false,

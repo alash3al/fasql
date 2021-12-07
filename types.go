@@ -34,3 +34,10 @@ type ReadQueryResponse struct {
 	Success bool                     `json:"success"`
 	Result  []map[string]interface{} `json:"result"`
 }
+
+// QueryLoggerRecord represents a record in the query-logger store
+type QueryLoggerRecord struct {
+	ID      int64  `db:"id"`
+	Request string `db:"request"`
+	Time    int64  `db:"time"`
+}
